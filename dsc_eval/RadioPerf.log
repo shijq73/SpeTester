@@ -1,0 +1,69 @@
+2022-12-08 22:16:43,956 {MainThread  ] {ERROR Traceback (most recent call last):
+  File "d:\56F81768_EVK\dsc_eval\adc_test\adc_test.py", line 241, in onStart
+    scan_list[index] = combobox.currentData()
+UnboundLocalError: local variable 'combobox' referenced before assignment
+
+2022-12-09 18:30:27,192 {MainThread  ] {ERROR Traceback (most recent call last):
+  File "d:\56F81768_EVK\dsc_eval\adc_test\adc_test.py", line 279, in onProcessStat
+    self.onAdcInd(data)
+  File "d:\56F81768_EVK\dsc_eval\adc_test\adc_test.py", line 308, in onAdcInd
+    if self.slot_comboboxes[index].currentData > 0x80:
+TypeError: '>' not supported between instances of 'builtin_function_or_method' and 'int'
+
+2022-12-09 18:48:02,572 {MainThread  ] {ERROR Traceback (most recent call last):
+  File "d:\56F81768_EVK\dsc_eval\adc_test\adc_test.py", line 200, in onUpdateGUI
+    current_index<len(combobox.items()) and \
+AttributeError: 'QComboBox' object has no attribute 'items'
+
+2022-12-09 18:48:42,612 {MainThread  ] {ERROR Traceback (most recent call last):
+  File "d:\56F81768_EVK\dsc_eval\adc_test\adc_test.py", line 200, in onUpdateGUI
+    current_index<len(combobox.count()) and \
+TypeError: object of type 'int' has no len()
+
+2022-12-11 21:36:50,401 {MainThread  ] {ERROR Traceback (most recent call last):
+  File "d:\56F81768_EVK\dsc_eval\dac_test\dac_test.py", line 27, in onStart
+    self.my_serial.dac_req(1, dac_val)
+  File "d:\56F81768_EVK\dsc_eval\my_serial.py", line 246, in dac_req
+    self.sendMsg(0x0, PERF_MSG.DAC_REQ, msg_data, 0)
+AttributeError: type object 'PERF_MSG' has no attribute 'DAC_REQ'
+
+2022-12-12 22:11:08,189 {MainThread  ] {ERROR Traceback (most recent call last):
+  File "d:\56F81768_EVK\dsc_eval\dac_test\dac_test.py", line 36, in onValChanged
+    voltage = float(new_str)
+ValueError: could not convert string to float: 'voltage:2.4f'
+
+2022-12-12 22:11:08,721 {MainThread  ] {ERROR Traceback (most recent call last):
+  File "d:\56F81768_EVK\dsc_eval\dac_test\dac_test.py", line 36, in onValChanged
+    voltage = float(new_str)
+ValueError: could not convert string to float: 'voltage:2.4f.'
+
+2022-12-12 22:11:09,040 {MainThread  ] {ERROR Traceback (most recent call last):
+  File "d:\56F81768_EVK\dsc_eval\dac_test\dac_test.py", line 36, in onValChanged
+    voltage = float(new_str)
+ValueError: could not convert string to float: 'voltage:2.4f.5'
+
+2022-12-12 22:12:24,402 {MainThread  ] {ERROR Traceback (most recent call last):
+  File "d:\56F81768_EVK\dsc_eval\dac_test\dac_test.py", line 36, in onValChanged
+    voltage = float(new_str)
+ValueError: could not convert string to float: '0.9954.'
+
+2022-12-12 22:12:25,008 {MainThread  ] {ERROR Traceback (most recent call last):
+  File "d:\56F81768_EVK\dsc_eval\dac_test\dac_test.py", line 36, in onValChanged
+    voltage = float(new_str)
+ValueError: could not convert string to float: '0.9954.5'
+
+2022-12-12 22:12:57,392 {MainThread  ] {ERROR Traceback (most recent call last):
+  File "d:\56F81768_EVK\dsc_eval\dac_test\dac_test.py", line 36, in onValChanged
+    voltage = float(new_str)
+ValueError: could not convert string to float: ''
+
+2022-12-12 22:13:01,974 {MainThread  ] {ERROR Traceback (most recent call last):
+  File "d:\56F81768_EVK\dsc_eval\dac_test\dac_test.py", line 36, in onValChanged
+    voltage = float(new_str)
+ValueError: could not convert string to float: '0.9954.'
+
+2022-12-13 09:38:57,396 {MainThread  ] {ERROR Traceback (most recent call last):
+  File "d:\56F81768_EVK\dsc_eval\dac_test\dac_test.py", line 57, in onStart
+    if not self.test_in_progress:
+AttributeError: 'DacTestWidget' object has no attribute 'test_in_progress'
+
