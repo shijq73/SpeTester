@@ -13,6 +13,8 @@ void usr_identify_board_confirm(uint8_t status,
         const char *trx_name,
         const char *board_name);
 
+void gpio_read_confirm(uint8_t status, uint8_t start_stop);
+void gpio_read_ind(uint8_t status, uint8_t port_index, uint8_t pin, uint8_t state);
 void adc_req_confirm(uint8_t status, uint8_t start_stop);
 void dac_req_confirm(uint8_t status, uint8_t start_stop);
 void adc_ind(uint8_t status, uint16_t *result);

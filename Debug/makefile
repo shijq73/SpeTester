@@ -10,7 +10,6 @@ RM := rm -rf
 -include sources.mk
 -include xip/subdir.mk
 -include utilities/ringbuffer/subdir.mk
--include utilities/subdir.mk
 -include startup/subdir.mk
 -include source/subdir.mk
 -include drivers/subdir.mk

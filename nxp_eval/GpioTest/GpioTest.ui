@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>603</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Peripheral</string>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QRadioButton" name="rbGpio1">
+        <property name="text">
+         <string>GPIO1</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="rbGpio2">
+        <property name="text">
+         <string>GPIO2</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QComboBox" name="cbPin">
+       <item>
+        <property name="text">
+         <string>GPIO A</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>GPIO B</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>GPIO C</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>GPIO D</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>GPIO E</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>GPIO F</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="edtState"/>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnRead">
+       <property name="text">
+        <string>Read (Start)</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnWrite">
+       <property name="text">
+        <string>Write</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

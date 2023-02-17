@@ -21,7 +21,6 @@ device \
 drivers \
 source \
 startup \
-utilities \
 utilities/ringbuffer \
 xip \
 

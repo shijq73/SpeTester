@@ -331,6 +331,43 @@ void usr_identify_board_confirm(uint8_t status,
     *msg_buf = EOT;
 }
 
+void gpio_read_confirm(uint8_t status, uint8_t start_stop)
+{
+    uint8_t *msg_buf = get_next_tx_buffer();
+    /* Pointer to size element - the content is written later. */
+    uint8_t *msg_size_ptr = msg_buf;
+
+    msg_buf = encode_msg_header(msg_buf, GPIO_READ_REQ | REQ_CONFIRM_MASK);
+
+    /* Copy confirmation payload */
+    *msg_buf++ = status;
+    *msg_buf++ = start_stop;
+
+    *msg_size_ptr = msg_buf-msg_size_ptr-1;
+
+    *msg_buf = EOT;
+}
+
+
+void gpio_read_ind(uint8_t status, uint8_t port_index, uint8_t pin, uint8_t state)
+{
+    uint8_t *msg_buf = get_next_tx_buffer();
+    /* Pointer to size element - the content is written later. */
+    uint8_t *msg_size_ptr = msg_buf;
+
+    msg_buf = encode_msg_header(msg_buf, GPIO_READ_REQ | IND_MASK);
+
+    /* Copy confirmation payload */
+    *msg_buf++ = status;
+    *msg_buf++ = port_index;
+    *msg_buf++ = pin;
+    *msg_buf++ = state;
+
+    *msg_size_ptr = msg_buf-msg_size_ptr-1;
+
+    *msg_buf = EOT;
+}
+
 
 void adc_req_confirm(uint8_t status, uint8_t start_stop)
 {
