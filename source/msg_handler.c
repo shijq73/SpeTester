@@ -54,7 +54,15 @@ void user_gpio1_0_15_handler(void)
 		{
 			uint32_t state = GPIO_PinRead(GPIO1, pin);
 
-			gpio_read_ind(0, 0, pin, state);
+			if(IOMUXC_GPR->GPR26 & (1<<pin))
+			{
+				gpio_read_ind(0, 1, pin, state);
+			}
+			else
+			{
+				gpio_read_ind(0, 0, pin, state);
+			}
+
 		    /* clear the interrupt status */
 		    GPIO_PortClearInterruptFlags(GPIO1, 1U << pin);
 		}
@@ -74,7 +82,15 @@ void user_gpio1_16_31_handler(void)
 		{
 			uint32_t state = GPIO_PinRead(GPIO1, pin);
 
-			gpio_read_ind(0, 0, pin, state);
+			if(IOMUXC_GPR->GPR26 & (1<<pin))
+			{
+				gpio_read_ind(0, 1, pin, state);
+			}
+			else
+			{
+				gpio_read_ind(0, 0, pin, state);
+			}
+
 		    /* clear the interrupt status */
 		    GPIO_PortClearInterruptFlags(GPIO1, 1U << pin);
 		}
@@ -219,7 +235,12 @@ static void gpio_read_req(uint8_t* rx_buf, uint8_t error_code)
 
 	  IOMUXC_SetPinMux(muxRegister, muxMode, inputDaisy, inputRegister, configRegister, inputOnfield);
 
-	#if 1
+	  //IOMUXC_GPR->GPR26 = ((IOMUXC_GPR->GPR26 &
+	  //  (~(0x8000U)))
+	  //    | IOMUXC_GPR_GPR26_GPIO_SEL(0x8000U)
+	  //  );
+
+#if 1
 	  if(peripheral_index == 1 && pin_index<29)
 	  {
 		IOMUXC_GPR->GPR26 |= (1u << pin);
@@ -236,7 +257,7 @@ static void gpio_read_req(uint8_t* rx_buf, uint8_t error_code)
 	  //if(port == GPIO1)
 	  if( pin_index < 29)
 	  {
-		  //EnableIRQ(GPIO1_Combined_0_15_IRQn);
+		  EnableIRQ(GPIO1_Combined_0_15_IRQn);
 		  EnableIRQ(GPIO1_Combined_16_31_IRQn);
 		  GPIO_PinInit(GPIO1, pin, &input_config);
 		  GPIO_PortEnableInterrupts(GPIO1, 1U << pin);
@@ -249,9 +270,9 @@ static void gpio_read_req(uint8_t* rx_buf, uint8_t error_code)
 		  GPIO_PortEnableInterrupts(GPIO2, 1U << pin);
 	  }
 
-	  //GPIO_PinInit(port, pin, &input_config);
+	  // GPIO_PinInit(port, pin, &input_config);
 
-	  //GPIO_PortEnableInterrupts(port, 1U << pin);
+	  // GPIO_PortEnableInterrupts(port, 1U << pin);
   }
   else
   {

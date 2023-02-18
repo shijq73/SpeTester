@@ -87,6 +87,12 @@ class GpioTestWidget(QWidget):
         self.update_gui.connect(self.onUpdateGUI)
         self.data_proc.connect(self.onProcessStat)
 
+    def handleDisconnect(self):
+        self.test_in_progress = False
+        self.btnRead.setEnabled(True)
+        self.btnRead.setText('Read (Start)')
+
+
     def initPinList(self):
         last_index = self.cbPin.currentIndex()
 
@@ -198,9 +204,18 @@ class GpioTestWidget(QWidget):
             else:
                 print('Button Pressed')  
 
+            update_text = False
+
             if pin_index == pin and \
                (self.rbGpio1.isChecked() and port_index == 0 or \
                 self.rbGpio2.isChecked() and port_index == 1):
+                update_text = True
+            
+            #if pin_index == pin and \
+            #   self.rbGpio2.isChecked(): 
+            #   update_text = True
+            
+            if update_text:
                 self.edtState.setText(str(data[3]))
 
     def onUpdateGUI(self):
