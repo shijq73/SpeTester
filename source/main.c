@@ -1,6 +1,6 @@
-#include "pin_mux.h"
-#include "clock_config.h"
 #include "board.h"
+#include "clock_config.h"
+#include "pin_mux.h"
 #include "serial_handler.h"
 
 /*******************************************************************************
@@ -31,7 +31,7 @@ int main(void)
   uint32_t temp = 0;
   while (1)
   {
-    serial_data_handler();
+    //serial_data_handler();
     //sw_timer_tick();
   }
 }

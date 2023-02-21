@@ -28,9 +28,6 @@
 #define BOARD_UART_IRQ         LPUART1_IRQn
 #define BOARD_UART_IRQ_HANDLER LPUART1_IRQHandler
 
-#ifndef BOARD_DEBUG_UART_BAUDRATE
-#define BOARD_DEBUG_UART_BAUDRATE (115200U)
-#endif /* BOARD_DEBUG_UART_BAUDRATE */
 
 /* @Brief Board accelerator sensor configuration */
 #define BOARD_ACCEL_I2C_BASEADDR             LPI2C1

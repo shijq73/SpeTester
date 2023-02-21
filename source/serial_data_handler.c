@@ -8,6 +8,9 @@
 
 /* === MACROS ============================================================== */
 
+#define BOARD_UART_BAUDRATE     115200U
+#define BOARD_UART              LPUART1
+
 /**
  * \name UART COMMUNICATION FRAMING
  * \{
@@ -40,37 +43,57 @@
 #define SERIAL_BUF_COUNT                (3)
 #define RX_RING_BUFFER_SIZE 						(128)
 
-#define DEMO_LPUART          LPUART1
-#define DEMO_LPUART_CLK_FREQ BOARD_DebugConsoleSrcFreq()
+
 
 /* === Globals ============================================================= */
 
 /* === Prototypes ========================================================== */
-static void LPUART_UserCallback(LPUART_Type *base, lpuart_handle_t *handle, status_t status, void *userData);
+static void uart_user_callback(LPUART_Type *base, lpuart_handle_t *handle, status_t status, void *userData);
 static void process_incoming_data(void);
 static void handle_incoming_msg();
 static uint8_t* encode_msg_header(uint8_t *msg_buf, uint8_t msg_id);
 
 /* === LOCALS ============================================================== */
 static uint8_t _data_len = 0;
-static uint8_t _rx_state = UART_RX_STATE_SOT;
 static uint8_t _rx_len;
+static uint8_t _rx_index;
+static uint8_t _buf_count = 0;
+static uint8_t _head = 0;
+static uint8_t _rx_state = UART_RX_STATE_SOT;
 static uint8_t _rxRingBuffer[RX_RING_BUFFER_SIZE] = {0}; /* RX ring buffer. */
 static uint8_t _data[SERIAL_RX_BUF_SIZE];
 static uint8_t _rx_buf[SERIAL_RX_BUF_SIZE];
 static uint8_t _tx_buf[SERIAL_BUF_COUNT][SERIAL_RX_BUF_SIZE];
 static uint8_t *_rx_ptr;
-static uint8_t _rx_index;
-static uint8_t _buf_count = 0;
-static uint8_t _head = 0;
-static uint8_t curr_tx_buffer_index=0;
+
 static lpuart_handle_t _lpuartHandle;
-static volatile bool _txing   = false;
-static volatile bool _rxing   = false;
 static lpuart_transfer_t receiveXfer;
 static lpuart_transfer_t sendXfer;
 
+static volatile bool _txing   = false;
+static volatile bool _rxing   = false;
+
 /* === IMPLEMENTATION ====================================================== */
+
+
+/* Get debug console frequency. */
+uint32_t get_uart_freq(void)
+{
+    uint32_t freq;
+
+    /* To make it simple, we assume default PLL and divider settings, and the only variable
+       from application is use PLL3 source or OSC source */
+    if (CLOCK_GetMux(kCLOCK_UartMux) == 0) /* PLL3 div6 80M */
+    {
+        freq = (CLOCK_GetPllFreq(kCLOCK_PllUsb1) / 6U) / (CLOCK_GetDiv(kCLOCK_UartDiv) + 1U);
+    }
+    else
+    {
+        freq = CLOCK_GetOscFreq() / (CLOCK_GetDiv(kCLOCK_UartDiv) + 1U);
+    }
+
+    return freq;
+}
 
 void serial_init()
 {
@@ -85,27 +108,26 @@ void serial_init()
    * config.enableRx = false;
    */
   LPUART_GetDefaultConfig(&config);
-  config.baudRate_Bps = BOARD_DEBUG_UART_BAUDRATE;
+  config.baudRate_Bps = BOARD_UART_BAUDRATE;
   config.enableTx     = true;
   config.enableRx     = true;
 
-  LPUART_Init(DEMO_LPUART, &config, DEMO_LPUART_CLK_FREQ);
-  LPUART_TransferCreateHandle(DEMO_LPUART, &_lpuartHandle, LPUART_UserCallback, NULL);
-  LPUART_TransferStartRingBuffer(DEMO_LPUART, &_lpuartHandle, _rxRingBuffer, RX_RING_BUFFER_SIZE);
+  LPUART_Init(BOARD_UART, &config, get_uart_freq());
+  LPUART_TransferCreateHandle(BOARD_UART, &_lpuartHandle, uart_user_callback, NULL);
+  LPUART_TransferStartRingBuffer(BOARD_UART, &_lpuartHandle, _rxRingBuffer, RX_RING_BUFFER_SIZE);
 }
 
-/* LPUART user callback */
-void LPUART_UserCallback(LPUART_Type *base, lpuart_handle_t *handle, status_t status, void *userData)
+
+void uart_user_callback(LPUART_Type *base, lpuart_handle_t *handle, status_t status, void *userData)
 {
     if (kStatus_LPUART_TxIdle == status)
     {
         if(_txing)
         {
-          _txing    = false;
+          _txing = false;
           _head++;
           _head %= SERIAL_BUF_COUNT;
           _buf_count--;
-          curr_tx_buffer_index = 0;
         }
     }
 
@@ -120,14 +142,14 @@ void serial_data_handler()
 	_rx_index = 0;
 
 	uint32_t receivedBytes;
-	uint32_t data_size = LPUART_TransferGetRxRingBufferLength(DEMO_LPUART, &_lpuartHandle);
+	uint32_t data_size = LPUART_TransferGetRxRingBufferLength(BOARD_UART, &_lpuartHandle);
 
 	if(data_size)
 	{
 		receiveXfer.data = _data;
 		receiveXfer.dataSize = data_size;
 
-		LPUART_TransferReceiveNonBlocking(DEMO_LPUART, &_lpuartHandle, &receiveXfer, &receivedBytes);
+		LPUART_TransferReceiveNonBlocking(BOARD_UART, &_lpuartHandle, &receiveXfer, &receivedBytes);
 
 		_data_len = data_size;
 
@@ -141,13 +163,14 @@ void serial_data_handler()
 		}
 	}
 
+
   /* Tx processing */
 	if (_buf_count != 0 && !_txing )
 	{
 			sendXfer.data = _tx_buf[_head];
 			sendXfer.dataSize = _tx_buf[_head][1] + 3;
 			_txing = true;
-			LPUART_TransferSendNonBlocking(DEMO_LPUART, &_lpuartHandle, &sendXfer);
+			LPUART_TransferSendNonBlocking(BOARD_UART, &_lpuartHandle, &sendXfer);
 	}
 }
 
