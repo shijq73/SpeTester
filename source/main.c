@@ -31,7 +31,7 @@ int main(void)
   uint32_t temp = 0;
   while (1)
   {
-    //serial_data_handler();
+    serial_data_handler();
     //sw_timer_tick();
   }
 }
